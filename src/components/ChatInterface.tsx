@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { MessageRenderer } from "./MessageRenderer";
 
 interface Agent {
   id: string;
@@ -67,7 +68,15 @@ export function ChatInterface({ agent, onBack }: ChatInterfaceProps) {
 
     try {
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-      const prompt = `${agent.personality}\n\nUser: ${inputMessage}\n\nPlease respond in character as ${agent.name}.`;
+      const prompt = `${agent.personality}\n\nUser: ${inputMessage}\n\nPlease respond in character as ${agent.name}. You can use structured formatting like:
+      - **Bold text** for emphasis
+      - Lists with bullet points (use - or *)
+      - Numbered lists (1. 2. 3.)
+      - Tables using | columns |
+      - Code blocks with \`code\`
+      - Headings with # ## ###
+      
+      Use these formats when they help organize information clearly.`;
       
       const result = await model.generateContent(prompt);
       const response = await result.response;
@@ -146,7 +155,10 @@ export function ChatInterface({ agent, onBack }: ChatInterfaceProps) {
                         ? 'bg-blue-600 text-white' 
                         : `bg-gray-100 text-gray-800`
                     }`}>
-                      <p className="text-sm">{message.text}</p>
+                      <MessageRenderer 
+                        text={message.text} 
+                        isUser={message.sender === 'user'}
+                      />
                       <p className={`text-xs mt-1 ${
                         message.sender === 'user' ? 'text-blue-100' : 'text-gray-500'
                       }`}>
