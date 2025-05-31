@@ -77,8 +77,8 @@ const Index = () => {
 
   if (selectedAgent) {
     return (
-      <div className="min-h-screen bg-gray-50 p-4">
-        <div className="max-w-4xl mx-auto h-[calc(100vh-2rem)]">
+      <div className="min-h-screen bg-gray-50 p-2 sm:p-4">
+        <div className="max-w-4xl mx-auto h-[calc(100vh-1rem)] sm:h-[calc(100vh-2rem)]">
           <ChatInterface agent={selectedAgent} onBack={handleBack} />
         </div>
       </div>
@@ -89,30 +89,30 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       {/* Header */}
       <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 py-6">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6">
           <div className="text-center">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent leading-tight">
               Truxt AI - Smart AI Agents Platform
             </h1>
-            <p className="text-xl text-gray-600 mt-2">Advanced AI Assistant Interface</p>
-            <p className="text-sm text-gray-500 mt-1">Developed by Rajan Kumar Karn</p>
+            <p className="text-lg sm:text-xl text-gray-600 mt-2">Advanced AI Assistant Interface</p>
+            <p className="text-xs sm:text-sm text-gray-500 mt-1">Developed by Rajan Kumar Karn</p>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-12">
-        <section className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+      <main className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-6 sm:py-8 lg:py-12">
+        <section className="text-center mb-8 sm:mb-12">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">
             Choose Your Specialized AI Agent
           </h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+          <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto px-2">
             Experience the future of AI assistance with our specialized agents. Each AI is expertly trained in specific domains to provide professional-grade support for business, wellness, creativity, technology, and education.
           </p>
         </section>
 
         {/* Agents Grid */}
-        <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16" aria-label="AI Agents Selection">
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-12 sm:mb-16" aria-label="AI Agents Selection">
           {agents.map((agent) => (
             <AgentCard
               key={agent.id}
@@ -123,43 +123,43 @@ const Index = () => {
         </section>
 
         {/* Features Section */}
-        <section className="bg-white rounded-2xl shadow-xl p-8">
-          <h3 className="text-2xl font-bold text-center text-gray-900 mb-8">
+        <section className="bg-white rounded-2xl shadow-xl p-4 sm:p-6 lg:p-8">
+          <h3 className="text-xl sm:text-2xl font-bold text-center text-gray-900 mb-6 sm:mb-8">
             Why Choose Truxt AI Platform?
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             <article className="text-center">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Bot className="w-8 h-8 text-blue-600" />
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                <Bot className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" />
               </div>
-              <h4 className="text-xl font-semibold mb-2">Domain-Specific AI Expertise</h4>
-              <p className="text-gray-600">Each AI agent is specially trained and optimized for specific use cases, ensuring expert-level assistance tailored to your needs.</p>
+              <h4 className="text-lg sm:text-xl font-semibold mb-2">Domain-Specific AI Expertise</h4>
+              <p className="text-sm sm:text-base text-gray-600">Each AI agent is specially trained and optimized for specific use cases, ensuring expert-level assistance tailored to your needs.</p>
             </article>
             <article className="text-center">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Lightbulb className="w-8 h-8 text-green-600" />
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                <Lightbulb className="w-6 h-6 sm:w-8 sm:h-8 text-green-600" />
               </div>
-              <h4 className="text-xl font-semibold mb-2">Advanced AI Technology</h4>
-              <p className="text-gray-600">Powered by Google's latest Generative AI technology for natural, intelligent, and contextually aware conversations.</p>
+              <h4 className="text-lg sm:text-xl font-semibold mb-2">Advanced AI Technology</h4>
+              <p className="text-sm sm:text-base text-gray-600">Powered by Google's latest Generative AI technology for natural, intelligent, and contextually aware conversations.</p>
             </article>
             <article className="text-center">
-              <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Heart className="w-8 h-8 text-purple-600" />
+              <div className="w-12 h-12 sm:w-16 sm:h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                <Heart className="w-6 h-6 sm:w-8 sm:h-8 text-purple-600" />
               </div>
-              <h4 className="text-xl font-semibold mb-2">Intuitive User Experience</h4>
-              <p className="text-gray-600">Clean, modern interface designed for seamless interaction and maximum productivity across all devices.</p>
+              <h4 className="text-lg sm:text-xl font-semibold mb-2">Intuitive User Experience</h4>
+              <p className="text-sm sm:text-base text-gray-600">Clean, modern interface designed for seamless interaction and maximum productivity across all devices.</p>
             </article>
           </div>
         </section>
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-8 mt-16">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <p className="text-gray-400">
+      <footer className="bg-gray-900 text-white py-6 sm:py-8 mt-12 sm:mt-16">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 text-center">
+          <p className="text-sm sm:text-base text-gray-400">
             © 2024 Truxt AI - Advanced AI Agents Platform | Developed by Rajan Kumar Karn
           </p>
-          <p className="text-sm text-gray-500 mt-2">
+          <p className="text-xs sm:text-sm text-gray-500 mt-2">
             Powered by Google Generative AI Technology
           </p>
           <nav className="mt-4">

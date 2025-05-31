@@ -114,43 +114,43 @@ export function ChatInterface({ agent, onBack }: ChatInterfaceProps) {
   return (
     <div className="flex flex-col h-full">
       <Card className="flex-1 flex flex-col">
-        <CardHeader className={`bg-gradient-to-r from-${agent.color}-600 to-${agent.color}-700 text-white`}>
-          <div className="flex items-center gap-3">
+        <CardHeader className={`bg-gradient-to-r from-${agent.color}-600 to-${agent.color}-700 text-white p-3 sm:p-6`}>
+          <div className="flex items-center gap-2 sm:gap-3">
             <Button 
               variant="ghost" 
               size="sm" 
               onClick={onBack}
-              className="text-white hover:bg-white/20"
+              className="text-white hover:bg-white/20 p-1 sm:p-2"
             >
               <ArrowLeft className="w-4 h-4" />
             </Button>
-            <div className={`w-10 h-10 rounded-full bg-white/20 flex items-center justify-center`}>
+            <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0`}>
               {agent.icon}
             </div>
-            <div>
-              <CardTitle className="text-lg">{agent.name}</CardTitle>
-              <p className="text-sm opacity-90">{agent.description}</p>
+            <div className="min-w-0 flex-1">
+              <CardTitle className="text-base sm:text-lg truncate">{agent.name}</CardTitle>
+              <p className="text-xs sm:text-sm opacity-90 line-clamp-2 sm:line-clamp-1">{agent.description}</p>
             </div>
           </div>
         </CardHeader>
         
         <CardContent className="flex-1 flex flex-col p-0">
-          <ScrollArea className="flex-1 p-4">
-            <div className="space-y-4">
+          <ScrollArea className="flex-1 p-2 sm:p-4">
+            <div className="space-y-3 sm:space-y-4">
               {messages.map((message) => (
                 <div
                   key={message.id}
                   className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
-                  <div className={`flex items-start gap-2 max-w-[80%] ${message.sender === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                  <div className={`flex items-start gap-2 max-w-[85%] sm:max-w-[80%] ${message.sender === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
+                    <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
                       message.sender === 'user' 
                         ? 'bg-blue-600 text-white' 
                         : `bg-${agent.color}-100 text-${agent.color}-600`
                     }`}>
-                      {message.sender === 'user' ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
+                      {message.sender === 'user' ? <User className="w-3 h-3 sm:w-4 sm:h-4" /> : <Bot className="w-3 h-3 sm:w-4 sm:h-4" />}
                     </div>
-                    <div className={`rounded-lg p-3 ${
+                    <div className={`rounded-lg p-2 sm:p-3 min-w-0 ${
                       message.sender === 'user' 
                         ? 'bg-blue-600 text-white' 
                         : `bg-gray-100 text-gray-800`
@@ -171,13 +171,13 @@ export function ChatInterface({ agent, onBack }: ChatInterfaceProps) {
               {isLoading && (
                 <div className="flex justify-start">
                   <div className="flex items-start gap-2">
-                    <div className={`w-8 h-8 rounded-full bg-${agent.color}-100 text-${agent.color}-600 flex items-center justify-center`}>
-                      <Bot className="w-4 h-4" />
+                    <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-${agent.color}-100 text-${agent.color}-600 flex items-center justify-center`}>
+                      <Bot className="w-3 h-3 sm:w-4 sm:h-4" />
                     </div>
-                    <div className="bg-gray-100 rounded-lg p-3">
+                    <div className="bg-gray-100 rounded-lg p-2 sm:p-3">
                       <div className="flex items-center gap-2">
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        <span className="text-sm text-gray-600">Thinking...</span>
+                        <Loader2 className="w-3 h-3 sm:w-4 sm:h-4 animate-spin" />
+                        <span className="text-xs sm:text-sm text-gray-600">Thinking...</span>
                       </div>
                     </div>
                   </div>
@@ -187,7 +187,7 @@ export function ChatInterface({ agent, onBack }: ChatInterfaceProps) {
             </div>
           </ScrollArea>
           
-          <div className="border-t p-4">
+          <div className="border-t p-2 sm:p-4">
             <div className="flex gap-2">
               <Input
                 value={inputMessage}
@@ -195,12 +195,12 @@ export function ChatInterface({ agent, onBack }: ChatInterfaceProps) {
                 onKeyPress={handleKeyPress}
                 placeholder="Type your message..."
                 disabled={isLoading}
-                className="flex-1"
+                className="flex-1 text-sm sm:text-base"
               />
               <Button 
                 onClick={sendMessage}
                 disabled={!inputMessage.trim() || isLoading}
-                className={`bg-${agent.color}-600 hover:bg-${agent.color}-700`}
+                className={`bg-${agent.color}-600 hover:bg-${agent.color}-700 px-3 sm:px-4`}
               >
                 <Send className="w-4 h-4" />
               </Button>
