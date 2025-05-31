@@ -66,7 +66,7 @@ export function ChatInterface({ agent, onBack }: ChatInterfaceProps) {
     setIsLoading(true);
 
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
       const prompt = `${agent.personality}\n\nUser: ${inputMessage}\n\nPlease respond in character as ${agent.name}.`;
       
       const result = await model.generateContent(prompt);
