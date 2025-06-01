@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Bot, Briefcase, Heart, Lightbulb, Code, BookOpen } from "lucide-react";
 import { AgentCard } from "@/components/AgentCard";
@@ -92,7 +91,7 @@ const Index = () => {
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6">
           <div className="text-center">
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent leading-tight">
-              Truxt AI - Smart AI Agents Platform
+              Rudra AI - Smart AI Agents Platform
             </h1>
             <p className="text-lg sm:text-xl text-gray-600 mt-2">Advanced AI Assistant Interface</p>
             <p className="text-xs sm:text-sm text-gray-500 mt-1">Developed by Rajan Kumar Karn</p>
@@ -125,7 +124,7 @@ const Index = () => {
         {/* Features Section */}
         <section className="bg-white rounded-2xl shadow-xl p-4 sm:p-6 lg:p-8">
           <h3 className="text-xl sm:text-2xl font-bold text-center text-gray-900 mb-6 sm:mb-8">
-            Why Choose Truxt AI Platform?
+            Why Choose Rudra AI Platform?
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             <article className="text-center">
@@ -157,7 +156,7 @@ const Index = () => {
       <footer className="bg-gray-900 text-white py-6 sm:py-8 mt-12 sm:mt-16">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 text-center">
           <p className="text-sm sm:text-base text-gray-400">
-            © 2024 Truxt AI - Advanced AI Agents Platform | Developed by Rajan Kumar Karn
+            © 2024 Rudra AI - Advanced AI Agents Platform | Developed by Rajan Kumar Karn
           </p>
           <p className="text-xs sm:text-sm text-gray-500 mt-2">
             Powered by Google Generative AI Technology
