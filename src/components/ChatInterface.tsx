@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from "react";
 import { Send, ArrowLeft, Bot, User, Loader2, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -172,11 +173,11 @@ ${conversationContext}
 Current user message: ${inputMessage}
 
 IMPORTANT INSTRUCTIONS:
-- Keep responses SHORT and conversational (2-3 sentences max unless user asks for detailed explanation)
-- Only provide long detailed responses if user specifically asks for "full explanation", "detailed answer", "explain in detail", or similar requests
-- Be natural and helpful, but concise
-- Use simple formatting only when necessary
-- Respond as ${agent.name} with your personality, but keep it brief`;
+- Provide medium-length responses (4-6 sentences) that are helpful and informative
+- Only provide very detailed/long responses if user specifically asks for "full explanation", "detailed answer", "explain in detail", "विस्तार से समझाओ", "step by step", "thoroughly explain", or similar requests for detailed information
+- Be natural, conversational, and comprehensive in your medium responses
+- Use formatting like bold, lists, and structure when it helps clarity
+- Respond as ${agent.name} with your personality and be genuinely helpful`;
       
       const result = await model.generateContent(prompt);
       const response = await result.response;
