@@ -1,4 +1,3 @@
-
 import { useState, useRef, useEffect } from "react";
 import { Send, ArrowLeft, Bot, User, Loader2, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -172,15 +171,12 @@ ${conversationContext}
 
 Current user message: ${inputMessage}
 
-Please respond in character as ${agent.name}. Remember our previous conversation and provide contextually relevant responses. You can use structured formatting like:
-- **Bold text** for emphasis
-- Lists with bullet points (use - or *)
-- Numbered lists (1. 2. 3.)
-- Tables using | columns |
-- Code blocks with \`code\`
-- Headings with # ## ###
-
-Use these formats when they help organize information clearly.`;
+IMPORTANT INSTRUCTIONS:
+- Keep responses SHORT and conversational (2-3 sentences max unless user asks for detailed explanation)
+- Only provide long detailed responses if user specifically asks for "full explanation", "detailed answer", "explain in detail", or similar requests
+- Be natural and helpful, but concise
+- Use simple formatting only when necessary
+- Respond as ${agent.name} with your personality, but keep it brief`;
       
       const result = await model.generateContent(prompt);
       const response = await result.response;
