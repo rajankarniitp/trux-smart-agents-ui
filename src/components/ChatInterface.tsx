@@ -1,11 +1,13 @@
+
 import { useState, useRef, useEffect } from "react";
-import { Send, ArrowLeft, Bot, User, Loader2 } from "lucide-react";
+import { Send, ArrowLeft, Bot, User, Loader2, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { MessageRenderer } from "./MessageRenderer";
+import { conversationHistoryUtils, ConversationMessage } from "@/utils/conversationHistory";
 
 interface Agent {
   id: string;
@@ -67,19 +69,45 @@ const getColorClasses = (color: string) => {
 export function ChatInterface({ agent, onBack }: ChatInterfaceProps) {
   const colors = getColorClasses(agent.color);
   
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      text: `Hello! I'm ${agent.name}. ${agent.personality} How can I help you today?`,
-      sender: 'agent',
-      timestamp: new Date()
-    }
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const genAI = new GoogleGenerativeAI("AIzaSyA8zu9RvP7vY3pPLv0sZgNAA5yZq34kdJQ");
+
+  // Load conversation history when component mounts
+  useEffect(() => {
+    const savedMessages = conversationHistoryUtils.getAgentMessages(agent.id);
+    
+    if (savedMessages.length > 0) {
+      // Convert ConversationMessage to Message format
+      const convertedMessages: Message[] = savedMessages.map(msg => ({
+        id: msg.id,
+        text: msg.text,
+        sender: msg.sender,
+        timestamp: msg.timestamp
+      }));
+      setMessages(convertedMessages);
+    } else {
+      // Set initial greeting message if no history exists
+      const initialMessage: Message = {
+        id: '1',
+        text: `Hello! I'm ${agent.name}. ${agent.personality} How can I help you today?`,
+        sender: 'agent',
+        timestamp: new Date()
+      };
+      setMessages([initialMessage]);
+      
+      // Save initial message to history
+      conversationHistoryUtils.addMessage(agent.id, {
+        id: initialMessage.id,
+        text: initialMessage.text,
+        sender: initialMessage.sender,
+        timestamp: initialMessage.timestamp
+      });
+    }
+  }, [agent.id, agent.name, agent.personality]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -88,6 +116,25 @@ export function ChatInterface({ agent, onBack }: ChatInterfaceProps) {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  const clearConversation = () => {
+    conversationHistoryUtils.clearAgentHistory(agent.id);
+    const initialMessage: Message = {
+      id: Date.now().toString(),
+      text: `Hello! I'm ${agent.name}. ${agent.personality} How can I help you today?`,
+      sender: 'agent',
+      timestamp: new Date()
+    };
+    setMessages([initialMessage]);
+    
+    // Save new initial message
+    conversationHistoryUtils.addMessage(agent.id, {
+      id: initialMessage.id,
+      text: initialMessage.text,
+      sender: initialMessage.sender,
+      timestamp: initialMessage.timestamp
+    });
+  };
 
   const sendMessage = async () => {
     if (!inputMessage.trim() || isLoading) return;
@@ -100,20 +147,40 @@ export function ChatInterface({ agent, onBack }: ChatInterfaceProps) {
     };
 
     setMessages(prev => [...prev, userMessage]);
+    
+    // Save user message to history
+    conversationHistoryUtils.addMessage(agent.id, {
+      id: userMessage.id,
+      text: userMessage.text,
+      sender: userMessage.sender,
+      timestamp: userMessage.timestamp
+    });
+
     setInputMessage("");
     setIsLoading(true);
 
     try {
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-      const prompt = `${agent.personality}\n\nUser: ${inputMessage}\n\nPlease respond in character as ${agent.name}. You can use structured formatting like:
-      - **Bold text** for emphasis
-      - Lists with bullet points (use - or *)
-      - Numbered lists (1. 2. 3.)
-      - Tables using | columns |
-      - Code blocks with \`code\`
-      - Headings with # ## ###
       
-      Use these formats when they help organize information clearly.`;
+      // Get conversation context for better responses
+      const conversationContext = conversationHistoryUtils.getConversationContext(agent.id, 8);
+      
+      const prompt = `${agent.personality}
+
+Previous conversation context:
+${conversationContext}
+
+Current user message: ${inputMessage}
+
+Please respond in character as ${agent.name}. Remember our previous conversation and provide contextually relevant responses. You can use structured formatting like:
+- **Bold text** for emphasis
+- Lists with bullet points (use - or *)
+- Numbered lists (1. 2. 3.)
+- Tables using | columns |
+- Code blocks with \`code\`
+- Headings with # ## ###
+
+Use these formats when they help organize information clearly.`;
       
       const result = await model.generateContent(prompt);
       const response = await result.response;
@@ -127,6 +194,15 @@ export function ChatInterface({ agent, onBack }: ChatInterfaceProps) {
       };
 
       setMessages(prev => [...prev, agentMessage]);
+      
+      // Save agent message to history
+      conversationHistoryUtils.addMessage(agent.id, {
+        id: agentMessage.id,
+        text: agentMessage.text,
+        sender: agentMessage.sender,
+        timestamp: agentMessage.timestamp
+      });
+      
     } catch (error) {
       console.error('Error generating response:', error);
       const errorMessage: Message = {
@@ -136,6 +212,14 @@ export function ChatInterface({ agent, onBack }: ChatInterfaceProps) {
         timestamp: new Date()
       };
       setMessages(prev => [...prev, errorMessage]);
+      
+      // Save error message to history
+      conversationHistoryUtils.addMessage(agent.id, {
+        id: errorMessage.id,
+        text: errorMessage.text,
+        sender: errorMessage.sender,
+        timestamp: errorMessage.timestamp
+      });
     } finally {
       setIsLoading(false);
     }
@@ -168,6 +252,15 @@ export function ChatInterface({ agent, onBack }: ChatInterfaceProps) {
               <CardTitle className="text-base sm:text-lg truncate">{agent.name}</CardTitle>
               <p className="text-xs sm:text-sm opacity-90 line-clamp-2 sm:line-clamp-1">{agent.description}</p>
             </div>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={clearConversation}
+              className="text-white hover:bg-white/20 p-1 sm:p-2 min-w-[32px] min-h-[32px] flex items-center justify-center flex-shrink-0"
+              title="Clear conversation"
+            >
+              <Trash2 className="w-4 h-4" />
+            </Button>
           </div>
         </CardHeader>
         
